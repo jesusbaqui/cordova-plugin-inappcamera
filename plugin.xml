@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-inappcamera"
+    version="1.0">
+    
+    <name>InApp Native Camera</name>
+    
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+    
+    <description>Android In App Native Camera with Flash, Rear Facing Camera, Zoom. iOS Camera mirror of Apache Camera (cordova-plugin-camera)</description>
+    
+    <author>jesusbaqui - fork of native camera</author>
+    
+    <keywords>cordova,camera,flash</keywords>
+    
+    <license>MIT</license>
+    
+    
+    <repo>https://github.com/wbt11a/cordova-plugin-wezka-nativecamera.git</repo>
+    
+    <js-module src="www/CameraConstants.js" name="Camera">
+        <clobbers target="Camera" />
+    </js-module>
+
+    <js-module src="www/CameraPopoverOptions.js" name="CameraPopoverOptions">
+        <clobbers target="CameraPopoverOptions" />
+    </js-module>
+
+    <js-module src="www/Camera.js" name="camera">
+        <clobbers target="navigator.camera" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Camera">
+                <param name="android-package" value="cordova.plugin.inappcamera.NativeCameraLauncher"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity 
+                android:label="nativecameraplugin" 
+                android:name="cordova.plugin.inappcamera.CameraActivity" 
+                android:screenOrientation="portrait" 
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            </activity>
+            <activity 
+                android:label="previewwindow" 
+                android:name="cordova.plugin.inappcamera.PreviewActivity" 
+                android:screenOrientation="portrait" 
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            </activity>
+        </config-file>
+
+        <source-file src="src/android/CameraActivity.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/PreviewActivity.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/NativeCameraLauncher.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/ExifHelper.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/nativecameraplugin.xml" target-dir="res/layout" />
+        <source-file src="src/android/previewwindow.xml" target-dir="res/layout" />
+        <source-file src="res/btn_shot.png" target-dir="res/drawable" />
+        <source-file src="res/btn_flip.png" target-dir="res/drawable" />
+        <source-file src="res/btn_flash_on.png" target-dir="res/drawable" />
+        <source-file src="res/btn_flash_no.png" target-dir="res/drawable" />
+        <source-file src="res/btn_flash_auto.png" target-dir="res/drawable" />
+        <source-file src="res/viewfinder.png" target-dir="res/drawable" />
+        <source-file src="res/check.png" target-dir="res/drawable" />
+        <source-file src="res/repeat.png" target-dir="res/drawable" />
+
+        <js-module src="www/CameraPopoverHandle.js" name="CameraPopoverHandle">
+            <clobbers target="CameraPopoverHandle" />
+        </js-module>
+
+        <framework src="com.squareup.picasso:picasso:2.5.2" />
+     </platform>
+
+      <!-- ios -->
+     <platform name="ios">
+         <config-file target="config.xml" parent="/*">
+             <feature name="Camera">
+                 <param name="ios-package" value="CDVCamera" />
+             </feature>
+             <preference name="CameraUsesGeolocation" value="false" />
+         </config-file>
+         
+         <js-module src="www/ios/CameraPopoverHandle.js" name="CameraPopoverHandle">
+             <clobbers target="CameraPopoverHandle" />
+         </js-module>
+         
+         <header-file src="src/ios/UIImage+CropScaleOrientation.h" />
+         <source-file src="src/ios/UIImage+CropScaleOrientation.m" />
+         <header-file src="src/ios/CDVCamera.h" />
+         <source-file src="src/ios/CDVCamera.m" />
+         <header-file src="src/ios/CDVJpegHeaderWriter.h" />
+         <source-file src="src/ios/CDVJpegHeaderWriter.m" />
+         <header-file src="src/ios/CDVExif.h" />
+         <framework src="ImageIO.framework" weak="true" />
+         <framework src="CoreLocation.framework" />
+         <framework src="CoreGraphics.framework" />
+         <framework src="AssetsLibrary.framework" />
+         <framework src="MobileCoreServices.framework" />
+         <framework src="CoreGraphics.framework" />
+         <framework src="AVFoundation.framework" />
+         
+         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+             <string></string>
+         </config-file>
+     </platform>
+
+     <!-- windows8 -->
+    <platform name="windows8">
+
+        <dependency id="org.apache.cordova.file" />
+        <config-file target="package.appxmanifest" parent="/Package/Capabilities">
+            <Capability Name="picturesLibrary" />
+            <DeviceCapability Name="webcam" />
+        </config-file>
+        <js-module src="www/CameraPopoverHandle.js" name="CameraPopoverHandle">
+            <clobbers target="CameraPopoverHandle" />
+        </js-module>
+        <js-module src="src/windows8/CameraProxy.js" name="CameraProxy">
+            <merges target="" />
+        </js-module>
+
+    </platform>
+          
+</plugin>
