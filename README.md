@@ -2,15 +2,15 @@ Features
 ==========================
 Native InApp Camera in custom activity basic features:
 
-Zoom
-Flash ON/OFF/AUTO.
-Image review screen.
-Title of image, the camera will show a title for camera ativity (optional if is sent in options)
+*Zoom
+*Flash ON/OFF/AUTO.
+*Image review screen.
+*Title of image, the camera will show a title for camera ativity (optional if is sent in options)
 
 
 Installation
 ==========================
-Use cordova add plugin https://github.com/jesusbaqui/cordova-plugin-inappcamera.git
+Use: cordova add plugin cordova-plugin-inappcamera
 
 
 Basic Usage
