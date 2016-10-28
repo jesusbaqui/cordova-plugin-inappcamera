@@ -149,15 +149,14 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
     var targetHeight = getValue(options.targetHeight, -1);
     var encodingType = getValue(options.encodingType, Camera.EncodingType.JPEG);
     var mediaType = getValue(options.mediaType, Camera.MediaType.PICTURE);
-    var allowEdit = !!options.allowEdit;
-    var correctOrientation = !!options.correctOrientation;
-    var saveToPhotoAlbum = !!options.saveToPhotoAlbum;
-    var popoverOptions = getValue(options.popoverOptions, null);
+    var allowEdit = getValue(options.allowEdit, false);
+    var correctOrientation = getValue(options.correctOrientation, true);
+    var saveToPhotoAlbum = getValue(options.saveToPhotoAlbum, false);
     var cameraDirection = getValue(options.cameraDirection, Camera.Direction.BACK);
-    var imageText = getValue(options.imageText, "");
+    var imageTitle = getValue(options.imageTitle, "");
 
     var args = [quality, destinationType, sourceType, targetWidth, targetHeight, encodingType,
-                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, popoverOptions, cameraDirection, imageText];
+                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, cameraDirection, imageTitle];
 
     exec(successCallback, errorCallback, "Camera", "takePicture", args);
     // XXX: commented out

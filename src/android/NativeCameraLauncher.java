@@ -43,6 +43,7 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	private static final String LOG_TAG = "InAppCameraLauncher";
 
     static final int PIC_REQUEST = 1;
+    static final int RESULT_OK = 1;
 
 	private static final int DATA_URL = 0;              // Return base64 encoded string
 	private static final int FILE_URI = 1;              // Return file uri (content://media/external/images/media/2 for Android)
@@ -79,7 +80,8 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	private boolean correctOrientation;     // Should the pictures orientation be corrected
 	private boolean orientationCorrected;   // Has the picture's orientation been corrected
 	private boolean allowEdit;              // Should we allow the user to crop the image.
-	private String imageTitle;              // Title to show in camera activity if specified.
+    private int cameraDirection;            // Indicate camera direction, front or back.
+    private String imageTitle;              // Title to show in camera activity if specified.
 
 	protected final static String[] permissions = { Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE };
 
@@ -91,7 +93,7 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	private Uri croppedUri;
 	private ExifHelper exifData;            // Exif data from source
 
-	protected NativeCameraLauncher() {
+	public NativeCameraLauncher() {
 	}
 
 	/**
@@ -117,17 +119,21 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			this.imageTitle = "";
 
 			//Take the values from the arguments if they're not already defined (this is tricky)
-			this.destType = args.getInt(1);
+            this.mQuality = args.getInt(0);
+            this.destType = args.getInt(1);
 			this.srcType = args.getInt(2);
-			this.mQuality = args.getInt(0);
 			this.targetWidth = args.getInt(3);
 			this.targetHeight = args.getInt(4);
 			this.encodingType = args.getInt(5);
 			this.mediaType = args.getInt(6);
 			this.allowEdit = args.getBoolean(7);
 			this.correctOrientation = args.getBoolean(8);
-			this.saveToPhotoAlbum = args.getBoolean(9);
-			this.imageTitle = args.getString(10);
+            this.saveToPhotoAlbum = args.getBoolean(9);
+            this.cameraDirection = args.getInt(10);
+			this.imageTitle = args.getString(11);
+
+            if (this.imageTitle == null)
+                this.imageTitle = "";
 
 			// If the user specifies a 0 or smaller width/height
 			// make it -1 so later comparisons succeed
@@ -240,7 +246,8 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 		File photo = createCaptureFile(encodingType);
 		this.imageUri = Uri.fromFile(photo);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-		intent.putExtra("IMAGE_TEXT_MESSAGE", imageTitle);
+        intent.putExtra("IMAGE_TEXT_MESSAGE", this.imageTitle);
+        intent.putExtra("CAMERA_DIRECTION", this.cameraDirection);
 
 		if (this.cordova != null) {
 			this.cordova.startActivityForResult(this, intent, (CAMERA + 1) * 16 + returnType + 1);
@@ -1196,78 +1203,76 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	 * @param intent            An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == PIC_REQUEST) {
 
-            // Get src and dest types from request code for a Camera Activity
-            int srcType = (requestCode / 16) - 1;
-            int destType = (requestCode % 16) - 1;
+        // Get src and dest types from request code for a Camera Activity
+        int srcType = (requestCode / 16) - 1;
+        int destType = (requestCode % 16) - 1;
 
-            // If Camera Crop
-            if (requestCode >= CROP_CAMERA) {
-                if (resultCode == Activity.RESULT_OK) {
+        // If Camera Crop
+        if (requestCode >= CROP_CAMERA) {
+            if (resultCode == RESULT_OK) {
 
-                    // Because of the inability to pass through multiple intents, this hack will allow us
-                    // to pass arcane codes back.
-                    destType = requestCode - CROP_CAMERA;
-                    try {
+                // Because of the inability to pass through multiple intents, this hack will allow us
+                // to pass arcane codes back.
+                destType = requestCode - CROP_CAMERA;
+                try {
+                    processResultFromCamera(destType, intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    LOG.e(LOG_TAG, "Unable to write to file");
+                }
+
+            }// If cancelled
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                failPicture("Camera cancelled.");
+            }
+
+            // If something else
+            else {
+                failPicture("Did not complete!");
+            }
+        }
+        // If CAMERA
+        else if (srcType == CAMERA) {
+            // If image available
+            if (resultCode == RESULT_OK) {
+                try {
+                    if (this.allowEdit) {
+                        Uri tmpFile = Uri.fromFile(createCaptureFile(this.encodingType));
+                        performCrop(tmpFile, destType, intent);
+                    } else {
                         processResultFromCamera(destType, intent);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        LOG.e(LOG_TAG, "Unable to write to file");
                     }
-
-                }// If cancelled
-                else if (resultCode == Activity.RESULT_CANCELED) {
-                    failPicture("Camera cancelled.");
-                }
-
-                // If something else
-                else {
-                    failPicture("Did not complete!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    failPicture("Error capturing image.");
                 }
             }
-            // If CAMERA
-            else if (srcType == CAMERA) {
-                // If image available
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-                        if (this.allowEdit) {
-                            Uri tmpFile = Uri.fromFile(createCaptureFile(this.encodingType));
-                            performCrop(tmpFile, destType, intent);
-                        } else {
-                            processResultFromCamera(destType, intent);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        failPicture("Error capturing image.");
-                    }
-                }
 
-                // If cancelled
-                else if (resultCode == Activity.RESULT_CANCELED) {
-                    failPicture("Camera cancelled.");
-                }
-
-                // If something else
-                else {
-                    failPicture("Did not complete!");
-                }
+            // If cancelled
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                failPicture("Camera cancelled.");
             }
-            // If retrieving photo from library
-            else if ((srcType == PHOTOLIBRARY) || (srcType == SAVEDPHOTOALBUM)) {
-                if (resultCode == Activity.RESULT_OK && intent != null) {
-                    final Intent i = intent;
-                    final int finalDestType = destType;
-                    cordova.getThreadPool().execute(new Runnable() {
-                        public void run() {
-                            processResultFromGallery(finalDestType, i);
-                        }
-                    });
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    this.failPicture("Selection cancelled.");
-                } else {
-                    this.failPicture("Selection did not complete!");
-                }
+
+            // If something else
+            else {
+                failPicture("Did not complete!");
+            }
+        }
+        // If retrieving photo from library
+        else if ((srcType == PHOTOLIBRARY) || (srcType == SAVEDPHOTOALBUM)) {
+            if (resultCode == Activity.RESULT_OK && intent != null) {
+                final Intent i = intent;
+                final int finalDestType = destType;
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        processResultFromGallery(finalDestType, i);
+                    }
+                });
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                this.failPicture("Selection cancelled.");
+            } else {
+                this.failPicture("Selection did not complete!");
             }
         }
 	}
