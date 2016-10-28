@@ -5,7 +5,7 @@ Native InApp Camera in custom activity basic features:
 Zoom
 Flash ON/OFF/AUTO.
 Image review screen.
-Title of image, the camera will show a title for camera ativity (optional if sned in options)
+Title of image, the camera will show a title for camera ativity (optional if is sent in options)
 
 
 Installation
