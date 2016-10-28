@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-inappcamera"
-    version="1.0">
+    version="1.1">
     
     <name>InApp Native Camera</name>
     
@@ -67,6 +67,7 @@
         <source-file src="src/android/PreviewActivity.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/NativeCameraLauncher.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/ExifHelper.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/FileHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/nativecameraplugin.xml" target-dir="res/layout" />
         <source-file src="src/android/previewwindow.xml" target-dir="res/layout" />
         <source-file src="res/btn_shot.png" target-dir="res/drawable" />

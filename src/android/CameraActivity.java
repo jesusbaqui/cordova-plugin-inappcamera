@@ -1,28 +1,10 @@
-/*
-        Copyright 2014 Giovanni Di Gregorio.
-
-        Licensed under the Apache License, Version 2.0 (the "License");
-        you may not use this file except in compliance with the License.
-        You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-        Unless required by applicable law or agreed to in writing, software
-        distributed under the License is distributed on an "AS IS" BASIS,
-        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        See the License for the specific language governing permissions and
-        limitations under the License.              
- */
-
 package cordova.plugin.inappcamera;
 
 import android.app.Activity;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -51,7 +33,6 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
 import android.widget.TextView;
-
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,7 +70,6 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
     static final int REVIEW_PIC_REQUEST = 2;
     static final int RESULT_OK = 1;
-    static final int RESULT_KO = 0;
 
     int ORIENTATION_UNKNOWN = -1;
 
@@ -123,7 +103,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         previewHolder.addCallback(surfaceCallback);
 
-        String imageTextMessage = getIntent().getStringExtra("IMAGETEXT_MESSAGE");
+        String imageTextMessage = getIntent().getStringExtra("IMAGE_TEXT_MESSAGE");
 
         if (imageTextMessage == "") {
             imageMessage.setVisibility(View.INVISIBLE);
@@ -459,8 +439,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
                 camera.setPreviewDisplay(previewHolder);
             }
             catch (Throwable t) {
-                Log.e("PreviewDemo-surfaceCallback",
-                        "Exception in setPreviewDisplay()", t);
+                Log.e("PreviewDemo-callback","Ex in setPreviewDisplay()", t);
             }
 
             if (!cameraConfigured) {
