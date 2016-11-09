@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-inappcamera",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Native InApp Camera in custom activity",
   "main": "plugin.xml",
   "scripts": {

@@ -34,8 +34,9 @@ public class PreviewActivity  extends Activity {
             .with(getApplicationContext())
             .load(fileUri)
             .fit()
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .networkPolicy(NetworkPolicy.NO_CACHE)
+            .centerCrop()
+            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .into(imgDisplay);
 
         btnClose.setOnClickListener(new View.OnClickListener() {            
