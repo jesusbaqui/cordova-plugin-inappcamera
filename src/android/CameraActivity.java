@@ -376,7 +376,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
         // Initialize preview if surface still exists
         if (preview.getHeight() > 0) {
-            initPreview(preview.getHeight());
+            initPreview();
             startPreview();
         }
     }
@@ -391,7 +391,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         }
         camera.release();
         camera = Camera.open(isFront);
-        initPreview(preview.getHeight());
+        initPreview();
         startPreview();
     }
 
@@ -406,34 +406,28 @@ public class CameraActivity extends Activity implements SensorEventListener {
         super.onPause();
     }
 
-    private Camera.Size getBestPreviewSize(int height, Camera.Parameters parameters) {
+    private Camera.Size getBestPreviewSize(Camera.Parameters parameters) {
+        List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+        Camera.Size previewSize = null;
+        float closestRatio = Float.MAX_VALUE;
 
-        final double ASPECT_TOLERANCE = 0.1;
-        Camera.Size optimalSize = null;
-        double minDiff = Double.MAX_VALUE;
-        // Try to find an size match aspect ratio and size
-        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-            double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - height) > ASPECT_TOLERANCE) continue;
-            if (Math.abs(size.height - height) < minDiff) {
-                optimalSize = size;
-                minDiff = Math.abs(size.height - height);
+        int targetPreviewWidth = preview.getHeight();
+        int targetPreviewHeight = preview.getWidth();
+        float targetRatio = targetPreviewWidth / (float) targetPreviewHeight;
+
+        Log.v(TAG, "target size: " + targetPreviewWidth + " / " + targetPreviewHeight + " ratio:" + targetRatio);
+        for (Camera.Size candidateSize : previewSizes) {
+            float whRatio = candidateSize.width / (float) candidateSize.height;
+            if (previewSize == null || Math.abs(targetRatio - whRatio) < Math.abs(targetRatio - closestRatio)) {
+                closestRatio = whRatio;
+                previewSize = candidateSize;
             }
         }
-        // Cannot find the one match the aspect ratio, ignore the requirement
-        if (optimalSize == null) {
-            minDiff = Double.MAX_VALUE;
-            for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-                if (Math.abs(size.height - height) < minDiff) {
-                    optimalSize = size;
-                    minDiff = Math.abs(size.height - height);
-                }
-            }
-        }
-        return optimalSize;
+
+        return previewSize;
     }
 
-    private void initPreview(int height) {
+    private void initPreview() {
         if (camera != null && previewHolder.getSurface() != null) {
             try {
                 camera.setPreviewDisplay(previewHolder);
@@ -444,7 +438,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
             if (!cameraConfigured) {
                 Camera.Parameters parameters = camera.getParameters();
-                Camera.Size size = getBestPreviewSize(height, parameters);
+                Camera.Size size = getBestPreviewSize(parameters);
                 Camera.Size pictureSize = getSmallestPictureSize(parameters);
                 if (size != null && pictureSize != null) {
                     isZoom = parameters.isZoomSupported() || parameters.isSmoothZoomSupported();
@@ -515,7 +509,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
             if (camera != null) {
                 camera.setDisplayOrientation(90);
             }
-            initPreview(preview.getHeight());
+            initPreview();
             startPreview();
         }
 

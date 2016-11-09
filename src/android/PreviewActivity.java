@@ -33,6 +33,7 @@ public class PreviewActivity  extends Activity {
         Picasso
             .with(getApplicationContext())
             .load(fileUri)
+            .fit()
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .networkPolicy(NetworkPolicy.NO_CACHE)
             .into(imgDisplay);
