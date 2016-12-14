@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.github.bumptech.glide.Glide;
+import com.bumptech.glide.Glide;
 import android.provider.MediaStore;
 
 public class PreviewActivity  extends Activity {

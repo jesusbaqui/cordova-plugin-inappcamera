@@ -41,9 +41,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.minimize.com.seek_bar_compat.SeekBarCompat;
-
-
 public class CameraActivity extends Activity implements SensorEventListener {
 
     private static final String TAG = "CameraActivity";
@@ -80,7 +77,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
     private float viewfinderHalfPx;
 
-    SeekBarCompat mSliderZoom;
+    SeekBar mSliderZoom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,7 +97,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         final int imgFlashAuto = getResources().getIdentifier("@drawable/btn_flash_auto", null, getPackageName());
         final int imgFlashOn = getResources().getIdentifier("@drawable/btn_flash_on", null, getPackageName());
 
-        mSliderZoom = (SeekBarCompat) findViewById(getResources().getIdentifier("sliderZoom", "id", getPackageName()));
+        mSliderZoom = (SeekBar) findViewById(getResources().getIdentifier("sliderZoom", "id", getPackageName()));
 
         viewfinderHalfPx = pxFromDp(72)/2;
         previewHolder = preview.getHolder();
