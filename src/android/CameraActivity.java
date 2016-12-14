@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -111,6 +112,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         }
         else {
             imageMessage.setText(imageTextMessage);
+            imageMessage.setBackgroundColor(Color.argb(127,0,0,0));
         }
 
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -195,29 +197,29 @@ public class CameraActivity extends Activity implements SensorEventListener {
         });
 
 
-        // if(isFrontCamera) {
-            // flipCamera.setOnClickListener(new View.OnClickListener() {
-            //     public void onClick(View v) {
-            //         if (cam == 0) {
-            //             cam = 1;
-            //             led = 0;
-            //             viewfinder.setVisibility(View.INVISIBLE);
-            //             if (isFlash) flashButton.setVisibility(View.INVISIBLE);
-            //             if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
-            //         } else {
-            //             cam = 0;
-            //             led = 0;
-            //             viewfinder.setVisibility(View.VISIBLE);
-            //             viewfinder.setX(screenWidth / 2 - viewfinderHalfPx);
-            //             viewfinder.setY(screenHeight / 2 - viewfinderHalfPx*3);
-            //             if (isFlash) flashButton.setVisibility(View.VISIBLE);
-            //             if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
-            //         }
-            //         cameraConfigured = false;
-            //         restartPreview(cam);
-            //     }
-            // });
-        // }
+         if(isFrontCamera) {
+             flipCamera.setOnClickListener(new View.OnClickListener() {
+                 public void onClick(View v) {
+                     if (cam == 0) {
+                         cam = 1;
+                         led = 0;
+                         viewfinder.setVisibility(View.INVISIBLE);
+                         if (isFlash) flashButton.setVisibility(View.INVISIBLE);
+                         if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                     } else {
+                         cam = 0;
+                         led = 0;
+                         viewfinder.setVisibility(View.VISIBLE);
+                         viewfinder.setX(screenWidth / 2 - viewfinderHalfPx);
+                         viewfinder.setY(screenHeight / 2 - viewfinderHalfPx*3);
+                         if (isFlash) flashButton.setVisibility(View.VISIBLE);
+                         if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                     }
+                     cameraConfigured = false;
+                     restartPreview(cam);
+                 }
+             });
+        }
 
         if(isFlash) {
             flashButton.setOnClickListener(new View.OnClickListener() {

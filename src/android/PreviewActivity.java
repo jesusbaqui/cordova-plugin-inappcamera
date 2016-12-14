@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import android.provider.MediaStore;
 
 public class PreviewActivity  extends Activity {
@@ -41,6 +43,7 @@ public class PreviewActivity  extends Activity {
             .load(fileUri)
             .centerCrop()
             .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .crossFade()
             .into(imgDisplay);
 
