@@ -63,14 +63,14 @@
             </activity>
         </config-file>
 
-        <source-file src="src/android/CameraActivity.java" target-dir="src/cordova/plugin/inappcamera" />
-        <source-file src="src/android/PreviewActivity.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/NativeCameraLauncher.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/CameraActivity.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/CameraLayout.xml" target-dir="res/layout" />
+        <source-file src="src/android/PreviewActivity.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/PreviewLayout.xml" target-dir="res/layout" />
         <source-file src="src/android/ExifHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/FileHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/styles.xml" target-dir="res/values" />
-        <source-file src="src/android/nativecameraplugin.xml" target-dir="res/layout" />
-        <source-file src="src/android/previewwindow.xml" target-dir="res/layout" />
         <source-file src="res/ic_check_circle_white_24dp.png" target-dir="res/drawable" />
         <source-file src="res/ic_replay_white_24dp.png" target-dir="res/drawable" />
         <source-file src="res/btn_shot.png" target-dir="res/drawable" />
@@ -79,8 +79,6 @@
         <source-file src="res/btn_flash_no.png" target-dir="res/drawable" />
         <source-file src="res/btn_flash_auto.png" target-dir="res/drawable" />
         <source-file src="res/viewfinder.png" target-dir="res/drawable" />
-        <source-file src="res/check.png" target-dir="res/drawable" />
-        <source-file src="res/repeat.png" target-dir="res/drawable" />
 
         <js-module src="www/CameraPopoverHandle.js" name="CameraPopoverHandle">
             <clobbers target="CameraPopoverHandle" />
