@@ -87,7 +87,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_main);
-        setContentView(getResources().getIdentifier("nativecameraplugin", "layout", getPackageName()));
+        setContentView(getResources().getIdentifier("CameraLayout", "layout", getPackageName()));
 
         preview = (SurfaceView) findViewById(getResources().getIdentifier("preview", "id", getPackageName()));
         final TextView imageMessage = (TextView) findViewById(getResources().getIdentifier("imageText", "id", getPackageName()));

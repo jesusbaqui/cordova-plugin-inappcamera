@@ -53,13 +53,13 @@
                 android:label="nativecameraplugin" 
                 android:name="cordova.plugin.inappcamera.CameraActivity" 
                 android:screenOrientation="portrait" 
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+                android:theme="@style/Theme.InAppTheme">
             </activity>
             <activity 
                 android:label="previewwindow" 
                 android:name="cordova.plugin.inappcamera.PreviewActivity" 
                 android:screenOrientation="portrait" 
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+                android:theme="@style/Theme.InAppTheme">
             </activity>
         </config-file>
 
@@ -68,6 +68,7 @@
         <source-file src="src/android/NativeCameraLauncher.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/ExifHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/FileHelper.java" target-dir="src/cordova/plugin/inappcamera" />
+        <source-file src="src/android/styles.xml" target-dir="res/values" />
         <source-file src="src/android/nativecameraplugin.xml" target-dir="res/layout" />
         <source-file src="src/android/previewwindow.xml" target-dir="res/layout" />
         <source-file src="res/ic_check_circle_white_24dp.png" target-dir="res/drawable" />

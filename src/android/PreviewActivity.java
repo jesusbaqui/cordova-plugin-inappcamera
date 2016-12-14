@@ -22,7 +22,7 @@ public class PreviewActivity  extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(getResources().getIdentifier("previewwindow", "layout", getPackageName()));
+        setContentView(getResources().getIdentifier("PreviewLayout", "layout", getPackageName()));
 
         Uri fileUri = (Uri) getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
 

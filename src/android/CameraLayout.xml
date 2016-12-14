@@ -52,15 +52,12 @@
                 android:background="@drawable/btn_shot"
                 android:layout_width="66dp"
                 android:layout_marginBottom="20dp" />
-            <app.minimize.com.seek_bar_compat.SeekBarCompat
+            <SeekBar
                 android:id="@+id/sliderZoom"
                 android:layout_width="90dp"
                 android:layout_height="28dp"
-                android:maxHeight="28sp"
-                app:progressColor="#fca208"
-                app:progressBackgroundColor="#000000"
-                app:thumbColor="#e4774b"
-                app:thumbAlpha="1.0"/>
+                android:theme="@android:style/Theme.Holo"
+                />
         </RelativeLayout>
     </RelativeLayout>
 
