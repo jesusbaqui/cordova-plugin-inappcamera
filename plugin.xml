@@ -65,9 +65,9 @@
 
         <source-file src="src/android/NativeCameraLauncher.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/CameraActivity.java" target-dir="src/cordova/plugin/inappcamera" />
-        <source-file src="src/android/cameraLayout.xml" target-dir="res/layout" />
+        <source-file src="src/android/camera_layout.xml" target-dir="res/layout" />
         <source-file src="src/android/PreviewActivity.java" target-dir="src/cordova/plugin/inappcamera" />
-        <source-file src="src/android/previewLayout.xml" target-dir="res/layout" />
+        <source-file src="src/android/preview_layout.xml" target-dir="res/layout" />
         <source-file src="src/android/ExifHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/FileHelper.java" target-dir="src/cordova/plugin/inappcamera" />
         <source-file src="src/android/styles.xml" target-dir="res/values" />

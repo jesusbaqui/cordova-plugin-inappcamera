@@ -87,7 +87,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_main);
-        setContentView(getResources().getIdentifier("cameraLayout", "layout", getPackageName()));
+        setContentView(getResources().getIdentifier("camera_layout", "layout", getPackageName()));
 
         preview = (SurfaceView) findViewById(getResources().getIdentifier("preview", "id", getPackageName()));
         final TextView imageMessage = (TextView) findViewById(getResources().getIdentifier("imageText", "id", getPackageName()));
