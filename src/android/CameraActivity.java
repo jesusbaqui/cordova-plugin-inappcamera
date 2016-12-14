@@ -91,7 +91,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
         preview = (SurfaceView) findViewById(getResources().getIdentifier("preview", "id", getPackageName()));
         final TextView imageMessage = (TextView) findViewById(getResources().getIdentifier("imageText", "id", getPackageName()));
-        // final Button flipCamera = (Button) findViewById(getResources().getIdentifier("flipCamera", "id", getPackageName()));
+        final Button flipCamera = (Button) findViewById(getResources().getIdentifier("flipButton", "id", getPackageName()));
         final Button flashButton = (Button) findViewById(getResources().getIdentifier("flashButton", "id", getPackageName()));
         final Button captureButton = (Button) findViewById(getResources().getIdentifier("captureButton", "id", getPackageName()));
         final ImageView viewfinder = (ImageView) findViewById(getResources().getIdentifier("viewfinder", "id", getPackageName()));
@@ -132,13 +132,13 @@ public class CameraActivity extends Activity implements SensorEventListener {
             isFlash = false;
         }
 
-        // if(Camera.getNumberOfCameras() > 1){
-        //     flipCamera.setVisibility(View.VISIBLE);
-        //     isFrontCamera = true;
-        // } else {
-        //     flipCamera.setVisibility(View.INVISIBLE);
-        //     isFrontCamera = false;
-        // }
+        if(Camera.getNumberOfCameras() > 1){
+            flipCamera.setVisibility(View.VISIBLE);
+            isFrontCamera = true;
+        } else {
+            flipCamera.setVisibility(View.INVISIBLE);
+            isFrontCamera = false;
+        }
 
         Display display = getWindowManager().getDefaultDisplay();
         // Necessary to use deprecated methods for Android 2.x support

@@ -8,9 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.github.bumptech.glide.Glide;
 import android.provider.MediaStore;
 
 public class PreviewActivity  extends Activity {
@@ -30,12 +28,20 @@ public class PreviewActivity  extends Activity {
         ImageButton btnClose = (ImageButton) findViewById(getResources().getIdentifier("btnCancel", "id", getPackageName()));
         ImageButton btnAccept = (ImageButton) findViewById(getResources().getIdentifier("btnAccept", "id", getPackageName()));
 
-        Picasso
+        // Picasso
+        //     .with(getApplicationContext())
+        //     .load(fileUri)
+        //     .centerCrop()
+        //     .memoryPolicy(MemoryPolicy.NO_CACHE)
+        //     .networkPolicy(NetworkPolicy.NO_CACHE)
+        //     .into(imgDisplay);
+
+        Glide
             .with(getApplicationContext())
             .load(fileUri)
             .centerCrop()
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .networkPolicy(NetworkPolicy.NO_CACHE)
+            .skipMemoryCache(true)
+            .crossFade()
             .into(imgDisplay);
 
         btnClose.setOnClickListener(new View.OnClickListener() {            
