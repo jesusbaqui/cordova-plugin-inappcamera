@@ -81,7 +81,8 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	private boolean orientationCorrected;   // Has the picture's orientation been corrected
 	private boolean allowEdit;              // Should we allow the user to crop the image.
     private int cameraDirection;            // Indicate camera direction, front or back.
-    private String imageTitle;              // Title to show in camera activity if specified.
+	private String imageTitle;              // Title to show in camera activity if specified.
+	private boolean confirmPicture;         // Should we allow the user to confirm captured picture.
 
 	protected final static String[] permissions = { Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE };
 
@@ -131,6 +132,7 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
             this.saveToPhotoAlbum = args.getBoolean(9);
             this.cameraDirection = args.getInt(10);
 			this.imageTitle = args.getString(11);
+			this.confirmPicture = args.getBoolean(12);
 
             if (this.imageTitle == null)
                 this.imageTitle = "";
@@ -246,7 +248,8 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 		File photo = createCaptureFile(encodingType);
 		this.imageUri = Uri.fromFile(photo);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        intent.putExtra("IMAGE_TEXT_MESSAGE", this.imageTitle);
+		intent.putExtra("CONFIRM_PICTURE", this.confirmPicture);
+		intent.putExtra("IMAGE_TEXT_MESSAGE", this.imageTitle);
         intent.putExtra("CAMERA_DIRECTION", this.cameraDirection);
 
 		if (this.cordova != null) {
@@ -273,10 +276,10 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 	 */
 	private File createCaptureFile(int encodingType, String fileName) {
 		if (fileName.isEmpty()) {
-			fileName = ".Pic";
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			fileName = "IMG_" + timeStamp + (this.encodingType == JPEG ? ".jpg" : ".png");
 		}
-
-		if (encodingType == JPEG) {
+		else if (encodingType == JPEG) {
 			fileName = fileName + ".jpg";
 		} else if (encodingType == PNG) {
 			fileName = fileName + ".png";

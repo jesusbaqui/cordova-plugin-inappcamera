@@ -33,10 +33,9 @@ public class PreviewActivity  extends Activity {
         Picasso
             .with(getApplicationContext())
             .load(fileUri)
-            .fit()
             .centerCrop()
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .networkPolicy(NetworkPolicy.NO_CACHE)
             .into(imgDisplay);
 
         btnClose.setOnClickListener(new View.OnClickListener() {            

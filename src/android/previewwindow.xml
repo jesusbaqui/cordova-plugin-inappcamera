@@ -23,21 +23,23 @@ android:layout_height="match_parent">
             android:layout_marginBottom="5dp"
             android:orientation="horizontal" >
 
-            <ImageButton android:id="@+id/btnCancel"
+            <ImageButton
+                android:id="@+id/btnCancel"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
-                android:src="@drawable/repeat"
+                android:src="@drawable/ic_replay_white_24dp"
                 android:background="@null" />
 
-            <ImageButton android:id="@+id/btnAccept"
+            <ImageButton
+                android:id="@+id/btnAccept"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:src="@drawable/check"
+                android:src="@drawable/ic_check_circle_white_24dp"
                 android:background="@null" />
-                </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

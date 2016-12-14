@@ -41,6 +41,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.minimize.com.seek_bar_compat.SeekBarCompat;
+
 
 public class CameraActivity extends Activity implements SensorEventListener {
 
@@ -78,7 +80,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
     private float viewfinderHalfPx;
 
-    SeekBar mSliderZoom;
+    SeekBarCompat mSliderZoom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,9 @@ public class CameraActivity extends Activity implements SensorEventListener {
         final int imgFlashNo = getResources().getIdentifier("@drawable/btn_flash_no", null, getPackageName());
         final int imgFlashAuto = getResources().getIdentifier("@drawable/btn_flash_auto", null, getPackageName());
         final int imgFlashOn = getResources().getIdentifier("@drawable/btn_flash_on", null, getPackageName());
-        mSliderZoom = (SeekBar)findViewById(getResources().getIdentifier("sliderZoom", "id", getPackageName()));
+
+        mSliderZoom = (SeekBarCompat) findViewById(getResources().getIdentifier("sliderZoom", "id", getPackageName()));
+
         viewfinderHalfPx = pxFromDp(72)/2;
         previewHolder = preview.getHolder();
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -343,17 +347,25 @@ public class CameraActivity extends Activity implements SensorEventListener {
         public void onPictureTaken(byte[] data, Camera camera) {
 
             Uri fileUri = (Uri) getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
+            boolean confirmPic = getIntent().getBooleanExtra("CONFIRM_PICTURE",false);
+
             String filePath = fileUri.getPath();
-            File pictureFile = new File(filePath);
 
             try {
+                File pictureFile = new File(filePath);
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
                 Log.i(TAG, "Image file write ok");
-                Intent intent = new Intent(getApplicationContext(), PreviewActivity.class);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(intent, REVIEW_PIC_REQUEST);
+
+                if (confirmPic) {
+                    Intent intent = new Intent(getApplicationContext(), PreviewActivity.class);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                    startActivityForResult(intent, REVIEW_PIC_REQUEST);
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
+                }
             } catch (FileNotFoundException e) {
                 Log.e(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {

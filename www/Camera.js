@@ -153,10 +153,10 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
     var correctOrientation = getValue(options.correctOrientation, true);
     var saveToPhotoAlbum = getValue(options.saveToPhotoAlbum, false);
     var cameraDirection = getValue(options.cameraDirection, Camera.Direction.BACK);
-    var imageTitle = getValue(options.imageTitle, "");
+    var confirmPicture = getValue(options.confirmPicture, false);
 
     var args = [quality, destinationType, sourceType, targetWidth, targetHeight, encodingType,
-                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, cameraDirection, imageTitle];
+                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, cameraDirection, imageTitle, confirmPicture];
 
     exec(successCallback, errorCallback, "Camera", "takePicture", args);
     // XXX: commented out
