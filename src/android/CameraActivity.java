@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.view.SurfaceView;
@@ -97,6 +98,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         final int imgFlashNo = getResources().getIdentifier("@drawable/btn_flash_no", null, getPackageName());
         final int imgFlashAuto = getResources().getIdentifier("@drawable/btn_flash_auto", null, getPackageName());
         final int imgFlashOn = getResources().getIdentifier("@drawable/btn_flash_on", null, getPackageName());
+        final LinearLayout buttonsLayout = (LinearLayout) findViewById(getResources().getIdentifier("buttonsLayout", "id", getPackageName()));
 
         mSliderZoom = (SeekBar) findViewById(getResources().getIdentifier("sliderZoom", "id", getPackageName()));
 
@@ -114,6 +116,8 @@ public class CameraActivity extends Activity implements SensorEventListener {
             imageMessage.setText(imageTextMessage);
             imageMessage.setBackgroundColor(Color.argb(127,0,0,0));
         }
+
+        buttonsLayout.setBackgroundColor(Color.argb(60,0,0,0));
 
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         if(sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size()!=0){

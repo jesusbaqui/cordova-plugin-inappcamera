@@ -1,5 +1,6 @@
 package cordova.plugin.inappcamera;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.net.Uri;
 
@@ -12,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import android.provider.MediaStore;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class PreviewActivity  extends Activity {
 
@@ -29,14 +32,9 @@ public class PreviewActivity  extends Activity {
         ImageView imgDisplay = (ImageView) findViewById(getResources().getIdentifier("imgDisplay", "id", getPackageName()));
         ImageButton btnClose = (ImageButton) findViewById(getResources().getIdentifier("btnCancel", "id", getPackageName()));
         ImageButton btnAccept = (ImageButton) findViewById(getResources().getIdentifier("btnAccept", "id", getPackageName()));
+        LinearLayout buttonsLayout = (LinearLayout) findViewById(getResources().getIdentifier("buttonsLayout", "id", getPackageName()));
 
-        // Picasso
-        //     .with(getApplicationContext())
-        //     .load(fileUri)
-        //     .centerCrop()
-        //     .memoryPolicy(MemoryPolicy.NO_CACHE)
-        //     .networkPolicy(NetworkPolicy.NO_CACHE)
-        //     .into(imgDisplay);
+        buttonsLayout.setBackgroundColor(Color.argb(60, 0, 0, 0));
 
         Glide
             .with(getApplicationContext())
