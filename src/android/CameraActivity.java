@@ -109,7 +109,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
         previewHolder.addCallback(surfaceCallback);
 
         String imageTextMessage = getIntent().getStringExtra("IMAGE_TEXT_MESSAGE");
-        String cameraDirection = getIntent().getStringExtra("CAMERA_DIRECTION");
+        int cameraDirection = getIntent().getIntExtra("CAMERA_DIRECTION", -1);
         int titleFontSize = getIntent().getIntExtra("TITLE_FONT_SIZE", -1);
         String titleFontColor = getIntent().getStringExtra("TITLE_FONT_COLOR");
         String titleBackgroundColor = getIntent().getStringExtra("TITLE_BACKGROUND_COLOR");

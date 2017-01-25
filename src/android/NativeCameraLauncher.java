@@ -83,6 +83,9 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
     private int cameraDirection;            // Indicate camera direction, front or back.
 	private String imageTitle;              // Title to show in camera activity if specified.
 	private boolean confirmPicture;         // Should we allow the user to confirm captured picture.
+	private int titleFontSize;            	// Indicate the font size to use on camera title.
+	private String titleFontColor;          // Indicate the font color to use on camera title.
+	private String titleBackgroundColor;    // Indicate the background color to use on camera title.
 
 	protected final static String[] permissions = { Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE };
 
@@ -134,11 +137,11 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			this.correctOrientation = args.getBoolean(8);
             this.saveToPhotoAlbum = args.getBoolean(9);
             this.cameraDirection = args.getInt(10);
-			this.imageTitle = args.getString(11, "");
+			this.imageTitle = args.getString(11);
 			this.confirmPicture = args.getBoolean(12);
-			this.titleFontSize = args.getInt(13, -1);
-			this.titleFontColor = args.getString(14, "");
-			this.titleBackgroundColor = args.getString(15, "");
+			this.titleFontSize = args.getInt(13);
+			this.titleFontColor = args.getString(14);
+			this.titleBackgroundColor = args.getString(15);
 
 			// If the user specifies a 0 or smaller width/height
 			// make it -1 so later comparisons succeed
