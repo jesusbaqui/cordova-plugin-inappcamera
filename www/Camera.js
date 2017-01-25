@@ -136,9 +136,9 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
     var cameraDirection = getValue(options.cameraDirection, Camera.Direction.BACK);
     var imageTitle = getValue(options.imageTitle, "");
     var confirmPicture = getValue(options.confirmPicture, false);
-    var titleFontSize = getValue(options.confirmPicture, -1);
-    var titleFontColor = getValue(options.confirmPicture, "");
-    var titleBackgroundColor = getValue(options.confirmPicture, "");
+    var titleFontSize = getValue(options.titleFontSize, -1);
+    var titleFontColor = getValue(options.titleFontColor, "");
+    var titleBackgroundColor = getValue(options.titleBackgroundColor, "");
 
     var args = [
         quality, 
