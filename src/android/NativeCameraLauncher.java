@@ -118,6 +118,9 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			this.mediaType = PICTURE;
 			this.mQuality = 50;
 			this.imageTitle = "";
+			this.titleFontSize = -1;
+			this.titleFontColor = "";
+			this.titleBackgroundColor = "";
 
 			//Take the values from the arguments if they're not already defined (this is tricky)
             this.mQuality = args.getInt(0);
@@ -131,11 +134,11 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			this.correctOrientation = args.getBoolean(8);
             this.saveToPhotoAlbum = args.getBoolean(9);
             this.cameraDirection = args.getInt(10);
-			this.imageTitle = args.getString(11);
+			this.imageTitle = args.getString(11, "");
 			this.confirmPicture = args.getBoolean(12);
-
-            if (this.imageTitle == null)
-                this.imageTitle = "";
+			this.titleFontSize = args.getInt(13, -1);
+			this.titleFontColor = args.getString(14, "");
+			this.titleBackgroundColor = args.getString(15, "");
 
 			// If the user specifies a 0 or smaller width/height
 			// make it -1 so later comparisons succeed
@@ -251,6 +254,9 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 		intent.putExtra("CONFIRM_PICTURE", this.confirmPicture);
 		intent.putExtra("IMAGE_TEXT_MESSAGE", this.imageTitle);
         intent.putExtra("CAMERA_DIRECTION", this.cameraDirection);
+		intent.putExtra("TITLE_FONT_SIZE", this.titleFontSize);
+        intent.putExtra("TITLE_FONT_COLOR", this.titleFontColor);
+        intent.putExtra("TITLE_BACKGROUND_COLOR", this.titleBackgroundColor);
 
 		if (this.cordova != null) {
 			this.cordova.startActivityForResult(this, intent, (CAMERA + 1) * 16 + returnType + 1);

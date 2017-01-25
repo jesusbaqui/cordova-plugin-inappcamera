@@ -89,12 +89,13 @@ public class CameraActivity extends Activity implements SensorEventListener {
         setContentView(getResources().getIdentifier("camera_layout", "layout", getPackageName()));
 
         preview = (SurfaceView) findViewById(getResources().getIdentifier("preview", "id", getPackageName()));
-        final TextView imageMessage = (TextView) findViewById(getResources().getIdentifier("imageText", "id", getPackageName()));
+        final TextView imageTitle = (TextView) findViewById(getResources().getIdentifier("imageText", "id", getPackageName()));
         final Button flipCamera = (Button) findViewById(getResources().getIdentifier("flipButton", "id", getPackageName()));
         final Button flashButton = (Button) findViewById(getResources().getIdentifier("flashButton", "id", getPackageName()));
         final Button captureButton = (Button) findViewById(getResources().getIdentifier("captureButton", "id", getPackageName()));
         final ImageView viewfinder = (ImageView) findViewById(getResources().getIdentifier("viewfinder", "id", getPackageName()));
         final RelativeLayout focusButton = (RelativeLayout) findViewById(getResources().getIdentifier("viewfinderArea", "id", getPackageName()));
+        final RelativeLayout titleLayout = (RelativeLayout) findViewById(getResources().getIdentifier("titleLayout", "id", getPackageName()));
         final int imgFlashNo = getResources().getIdentifier("@drawable/btn_flash_no", null, getPackageName());
         final int imgFlashAuto = getResources().getIdentifier("@drawable/btn_flash_auto", null, getPackageName());
         final int imgFlashOn = getResources().getIdentifier("@drawable/btn_flash_on", null, getPackageName());
@@ -108,13 +109,39 @@ public class CameraActivity extends Activity implements SensorEventListener {
         previewHolder.addCallback(surfaceCallback);
 
         String imageTextMessage = getIntent().getStringExtra("IMAGE_TEXT_MESSAGE");
+        String cameraDirection = getIntent().getStringExtra("CAMERA_DIRECTION");
+        int titleFontSize = getIntent().getIntExtra("TITLE_FONT_SIZE", -1);
+        String titleFontColor = getIntent().getStringExtra("TITLE_FONT_COLOR");
+        String titleBackgroundColor = getIntent().getStringExtra("TITLE_BACKGROUND_COLOR");
 
         if (imageTextMessage == "") {
-            imageMessage.setVisibility(View.INVISIBLE);
+            titleLayout.setVisibility(View.INVISIBLE);
         }
         else {
-            imageMessage.setText(imageTextMessage);
-            imageMessage.setBackgroundColor(Color.argb(127,0,0,0));
+            imageTitle.setText(imageTextMessage);
+        }
+
+        if (titleFontSize > 0) {
+            try{
+                imageTitle.setTextSize(titleFontSize);
+            }
+            catch(Exception e){}
+        }
+
+        if (titleFontColor != "") {
+            try{
+                imageTitle.setTextSize(titleFontSize);
+            }
+            catch(Exception e){}
+        }
+
+        if (titleBackgroundColor != "") {
+            try{
+                imageTitle.setTextSize(titleFontSize);
+            }
+            catch(Exception e){}
+        } else {
+            imageTitle.setBackgroundColor(Color.argb(127,0,0,0));
         }
 
         buttonsLayout.setBackgroundColor(Color.argb(60,0,0,0));
@@ -202,6 +229,26 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
 
          if(isFrontCamera) {
+            if (cameraDirection == 1) {
+                if (cam == 0) {
+                    cam = 1;
+                    led = 0;
+                    viewfinder.setVisibility(View.INVISIBLE);
+                    if (isFlash) flashButton.setVisibility(View.INVISIBLE);
+                    if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                } else {
+                    cam = 0;
+                    led = 0;
+                    viewfinder.setVisibility(View.VISIBLE);
+                    viewfinder.setX(screenWidth / 2 - viewfinderHalfPx);
+                    viewfinder.setY(screenHeight / 2 - viewfinderHalfPx*3);
+                    if (isFlash) flashButton.setVisibility(View.VISIBLE);
+                    if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                }
+                cameraConfigured = false;
+                restartPreview(cam);
+            }
+
              flipCamera.setOnClickListener(new View.OnClickListener() {
                  public void onClick(View v) {
                      if (cam == 0) {
@@ -303,8 +350,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
                     });
                 } catch (RuntimeException ex) {
                     // Auto focus crash. Ignore.
-                    Toast.makeText(getApplicationContext(), 
-                        "Error de enfoque", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error de enfoque", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Auto-focus crash");
                 }            
             }

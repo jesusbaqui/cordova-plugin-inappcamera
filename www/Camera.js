@@ -59,25 +59,6 @@ for (var key in Camera) {
  */
 
 /**
- * Optional parameters to customize the camera settings.
- * * [Quirks](#CameraOptions-quirks)
- * @typedef module:camera.CameraOptions
- * @type {Object}
- * @property {number} [quality=50] - Quality of the saved image, expressed as a range of 0-100, where 100 is typically full resolution with no loss from file compression. (Note that information about the camera's resolution is unavailable.)
- * @property {module:Camera.DestinationType} [destinationType=FILE_URI] - Choose the format of the return value.
- * @property {module:Camera.PictureSourceType} [sourceType=CAMERA] - Set the source of the picture.
- * @property {Boolean} [allowEdit=true] - Allow simple editing of image before selection.
- * @property {module:Camera.EncodingType} [encodingType=JPEG] - Choose the  returned image file's encoding.
- * @property {number} [targetWidth] - Width in pixels to scale image. Must be used with `targetHeight`. Aspect ratio remains constant.
- * @property {number} [targetHeight] - Height in pixels to scale image. Must be used with `targetWidth`. Aspect ratio remains constant.
- * @property {module:Camera.MediaType} [mediaType=PICTURE] - Set the type of media to select from.  Only works when `PictureSourceType` is `PHOTOLIBRARY` or `SAVEDPHOTOALBUM`.
- * @property {Boolean} [correctOrientation] - Rotate the image to correct for the orientation of the device during capture.
- * @property {Boolean} [saveToPhotoAlbum] - Save the image to the photo album on the device after capture.
- * @property {module:CameraPopoverOptions} [popoverOptions] - iOS-only options that specify popover location in iPad.
- * @property {module:Camera.Direction} [cameraDirection=BACK] - Choose the camera to use (front- or back-facing).
- */
-
-/**
  * @description Takes a photo using the camera, or retrieves a photo from the device's
  * image gallery.  The image is passed to the success callback as a
  * Base64-encoded `String`, or as the URI for the image file.
@@ -155,13 +136,30 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
     var cameraDirection = getValue(options.cameraDirection, Camera.Direction.BACK);
     var imageTitle = getValue(options.imageTitle, "");
     var confirmPicture = getValue(options.confirmPicture, false);
+    var titleFontSize = getValue(options.confirmPicture, -1);
+    var titleFontColor = getValue(options.confirmPicture, "");
+    var titleBackgroundColor = getValue(options.confirmPicture, "");
 
-    var args = [quality, destinationType, sourceType, targetWidth, targetHeight, encodingType,
-                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, cameraDirection, imageTitle, confirmPicture];
+    var args = [
+        quality, 
+        destinationType, 
+        sourceType, 
+        targetWidth, 
+        targetHeight, 
+        encodingType,
+        mediaType, 
+        allowEdit, 
+        correctOrientation, 
+        saveToPhotoAlbum, 
+        cameraDirection, 
+        imageTitle, 
+        confirmPicture, 
+        titleFontSize, 
+        titleFontColor, 
+        titleBackgroundColor
+    ];
 
     exec(successCallback, errorCallback, "Camera", "takePicture", args);
-    // XXX: commented out
-    //return new CameraPopoverHandle();
 };
 
 /**
