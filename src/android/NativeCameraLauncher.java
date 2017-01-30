@@ -148,9 +148,6 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			if (imageTitle == null)
 				imageTitle = "";
 
-			if (titleFontSize == null)
-				titleFontSize = -1;
-
 			if (titleFontColor == null)
 				titleFontColor = "";
 
