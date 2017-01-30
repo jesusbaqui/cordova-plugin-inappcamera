@@ -122,22 +122,22 @@ public class CameraActivity extends Activity implements SensorEventListener {
         }
 
         if (titleFontSize > 0) {
-            try{
+            try {
                 imageTitle.setTextSize(titleFontSize);
             }
             catch(Exception e){}
         }
 
         if (titleFontColor != "") {
-            try{
-                imageTitle.setTextSize(titleFontSize);
+            try {
+                imageTitle.setTextColor(Color.parseColor(titleFontColor));
             }
             catch(Exception e){}
         }
 
         if (titleBackgroundColor != "") {
-            try{
-                imageTitle.setTextSize(titleFontSize);
+            try {
+                imageTitle.setBackgroundColor(Color.parseColor(titleBackgroundColor));
             }
             catch(Exception e){}
         } else {

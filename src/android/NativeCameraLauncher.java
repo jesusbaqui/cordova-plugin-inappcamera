@@ -145,19 +145,26 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 
 			// If the user specifies a 0 or smaller width/height
 			// make it -1 so later comparisons succeed
-			if (this.targetWidth < 1) {
-				this.targetWidth = -1;
-			}
-			if (this.targetHeight < 1) {
-				this.targetHeight = -1;
-			}
+			if (imageTitle == null)
+				imageTitle = "";
 
-			// We don't return full-quality PNG files. The camera outputs a JPEG
-			// so requesting it as a PNG provides no actual benefit
-			if (this.targetHeight == -1 && this.targetWidth == -1 && this.mQuality == 100 &&
-					!this.correctOrientation && this.encodingType == PNG && this.srcType == CAMERA) {
+			if (titleFontSize == null)
+				titleFontSize = -1;
+
+			if (titleFontColor == null)
+				titleFontColor = "";
+
+			if (titleBackgroundColor == "")
+				titleBackgroundColor = "";
+
+			if (this.targetWidth < 1)
+				this.targetWidth = -1;
+
+			if (this.targetHeight < 1)
+				this.targetHeight = -1;
+
+			if (this.targetHeight == -1 && this.targetWidth == -1 && this.mQuality == 100 && !this.correctOrientation && this.encodingType == PNG && this.srcType == CAMERA) 
 				this.encodingType = JPEG;
-			}
 
 			try {
 				if (this.srcType == CAMERA) {
