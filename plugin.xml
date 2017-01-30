@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-inappcamera"
-    version="1.0.6">
+    version="1.0.7">
     
     <name>InApp Native Camera</name>
     
@@ -85,7 +85,6 @@
             <clobbers target="CameraPopoverHandle" />
         </js-module>
 
-        <!-- <framework src="src/android/inappcamera.gradle" custom="true" type="gradleReference"/> -->
         <framework src="com.github.bumptech.glide:glide:3.7.0" />
         <framework src="com.android.support:support-v4:19.1.0" />
         
@@ -120,7 +119,7 @@
          <framework src="AVFoundation.framework" />
          
          <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-             <string></string>
+             <string>Uses camera</string>
          </config-file>
      </platform>
 
