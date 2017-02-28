@@ -139,7 +139,9 @@ public class CameraActivity extends Activity implements SensorEventListener {
             try {
                 imageTitle.setBackgroundColor(Color.parseColor(titleBackgroundColor));
             }
-            catch(Exception e){}
+            catch(Exception e){
+              imageTitle.setBackgroundColor(Color.argb(127,0,0,0));
+            }
         } else {
             imageTitle.setBackgroundColor(Color.argb(127,0,0,0));
         }
@@ -179,6 +181,11 @@ public class CameraActivity extends Activity implements SensorEventListener {
         focusButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+              if (pressed || camera == null)
+                return false;
+
+              try {
                 float x = 0;
                 float y = 0;
                 Rect focusRect;
@@ -186,44 +193,45 @@ public class CameraActivity extends Activity implements SensorEventListener {
                 x = (((event.getY() * 2000) / screenHeight) - 1000);
 
                 if((int)x-100 > -1000 && (int)x+100 < 1000 && (int)y-100 > -1000 && (int)y+100 < 1000) {
-                    focusRect = new Rect((int)x-100, (int)y-100, (int)x+100, (int)y+100);
+                  focusRect = new Rect((int)x-100, (int)y-100, (int)x+100, (int)y+100);
                 } else {
-                    focusRect = new Rect(-100, -100, 100, 100);
+                  focusRect = new Rect(-100, -100, 100, 100);
                 }
-
-                if (camera == null)
-                    return true;
 
                 Parameters parameters = camera.getParameters();
 
                 if (parameters.getMaxNumFocusAreas() > 0) {
 
-                    if(event.getX() - viewfinderHalfPx < 0) {
-                        viewfinder.setX(0);
-                    } else if(event.getX() + viewfinderHalfPx > screenWidth) {
-                        viewfinder.setX(screenWidth - viewfinderHalfPx*2);
-                    } else {
-                        viewfinder.setX(event.getX() - viewfinderHalfPx);
-                    }
+                  if(event.getX() - viewfinderHalfPx < 0) {
+                    viewfinder.setX(0);
+                  } else if(event.getX() + viewfinderHalfPx > screenWidth) {
+                    viewfinder.setX(screenWidth - viewfinderHalfPx*2);
+                  } else {
+                    viewfinder.setX(event.getX() - viewfinderHalfPx);
+                  }
 
-                    if(event.getY() - viewfinderHalfPx < 0) {
-                        viewfinder.setY(0);
-                    } else if(event.getY() + viewfinderHalfPx > screenHeight - pxFromDp(125)) {
-                        viewfinder.setY((screenHeight - pxFromDp(125)) - viewfinderHalfPx*2);
-                    } else {
-                        viewfinder.setY(event.getY() - viewfinderHalfPx);
-                    }
+                  if(event.getY() - viewfinderHalfPx < 0) {
+                    viewfinder.setY(0);
+                  } else if(event.getY() + viewfinderHalfPx > screenHeight - pxFromDp(125)) {
+                    viewfinder.setY((screenHeight - pxFromDp(125)) - viewfinderHalfPx*2);
+                  } else {
+                    viewfinder.setY(event.getY() - viewfinderHalfPx);
+                  }
 
-                    List<Camera.Area> focusArea = new ArrayList<Camera.Area>();
-                    focusArea.add(new Camera.Area(focusRect, 750));
-                    parameters.setFocusAreas(focusArea);
-                    if(parameters.getMaxNumMeteringAreas() > 0) {
-                        parameters.setMeteringAreas(focusArea);
-                    }
+                  List<Camera.Area> focusArea = new ArrayList<Camera.Area>();
+                  focusArea.add(new Camera.Area(focusRect, 750));
+                  parameters.setFocusAreas(focusArea);
+                  if(parameters.getMaxNumMeteringAreas() > 0) {
+                    parameters.setMeteringAreas(focusArea);
+                  }
 
-                    camera.setParameters(parameters);
+                  camera.setParameters(parameters);
                 }
                 return true;
+              }
+              catch(Exception e) {
+                return false;
+              }
             }
         });
 
@@ -251,23 +259,31 @@ public class CameraActivity extends Activity implements SensorEventListener {
 
              flipCamera.setOnClickListener(new View.OnClickListener() {
                  public void onClick(View v) {
+                   if (pressed || camera == null)
+                     return;
+
+                   try{
                      if (cam == 0) {
-                         cam = 1;
-                         led = 0;
-                         viewfinder.setVisibility(View.INVISIBLE);
-                         if (isFlash) flashButton.setVisibility(View.INVISIBLE);
-                         if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                       cam = 1;
+                       led = 0;
+                       viewfinder.setVisibility(View.INVISIBLE);
+                       if (isFlash) flashButton.setVisibility(View.INVISIBLE);
+                       if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
                      } else {
-                         cam = 0;
-                         led = 0;
-                         viewfinder.setVisibility(View.VISIBLE);
-                         viewfinder.setX(screenWidth / 2 - viewfinderHalfPx);
-                         viewfinder.setY(screenHeight / 2 - viewfinderHalfPx*3);
-                         if (isFlash) flashButton.setVisibility(View.VISIBLE);
-                         if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
+                       cam = 0;
+                       led = 0;
+                       viewfinder.setVisibility(View.VISIBLE);
+                       viewfinder.setX(screenWidth / 2 - viewfinderHalfPx);
+                       viewfinder.setY(screenHeight / 2 - viewfinderHalfPx*3);
+                       if (isFlash) flashButton.setVisibility(View.VISIBLE);
+                       if (isFlash) flashButton.setBackgroundResource(imgFlashNo);
                      }
                      cameraConfigured = false;
                      restartPreview(cam);
+                   }
+                   catch (Exception e) {
+
+                   }
                  }
              });
         }
@@ -275,22 +291,30 @@ public class CameraActivity extends Activity implements SensorEventListener {
         if(isFlash) {
             flashButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                  if (pressed || camera == null)
+                    return;
+
+                  try {
                     Parameters p = camera.getParameters();
                     if (led == 0) {
-                        p.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-                        flashButton.setBackgroundResource(imgFlashAuto);
-                        led = 1;
+                      p.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+                      flashButton.setBackgroundResource(imgFlashAuto);
+                      led = 1;
                     } else if (led == 1) {
-                        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                        flashButton.setBackgroundResource(imgFlashOn);
-                        led = 2;
+                      p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                      flashButton.setBackgroundResource(imgFlashOn);
+                      led = 2;
                     } else if (led == 2) {
-                        p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                        flashButton.setBackgroundResource(imgFlashNo);
-                        led = 0;
+                      p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                      flashButton.setBackgroundResource(imgFlashNo);
+                      led = 0;
                     }
                     camera.setParameters(p);
                     camera.startPreview();
+                  }
+                  catch (Exception e) {
+
+                  }
                 }
             });
         }
@@ -300,26 +324,26 @@ public class CameraActivity extends Activity implements SensorEventListener {
             {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    // TODO Auto-generated method stub   
+                    // TODO Auto-generated method stub
                 }
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-                    // TODO Auto-generated method stub   
+                    // TODO Auto-generated method stub
                 }
 
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                  if (pressed || camera == null)
+                    return;
+
+                  try {
                     Parameters params = camera.getParameters();
                     params.setZoom(progress);
                     camera.setParameters(params);
+                  } catch (Exception e) {
 
-                    //float tempZoomLevel = maxZoomLevel * progress;
-                    //int currentZoomLevel = 0;
-
-                    //if (tempZoomLevel != 0) {
-                    //    currentZoomLevel = (int) Math.round(tempZoomLevel / 100);
-                    //}
+                  }
                 }
             });
         // } else {
@@ -330,29 +354,34 @@ public class CameraActivity extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 if (pressed || camera == null)
                     return;
-                
+
+              try {
                 Parameters p = camera.getParameters();
                 p.setRotation(degrees);
                 camera.setParameters(p);
                 pressed = true;
                 // Auto-focus first, catching rare autofocus error
-                try {
                     camera.autoFocus(new AutoFocusCallback() {
                         public void onAutoFocus(boolean success, Camera camera) {
                             // Catch take picture error
                             try {
                                 camera.takePicture(null, null, mPicture);
                             } catch (RuntimeException ex) {
-                                // takePicture crash. Ignore.
-                                Log.e(TAG, "Auto-focus crash");
+                                Log.e(TAG, "Take picture crash");
+                                pressed = false;
                             }
                         }
                     });
                 } catch (RuntimeException ex) {
-                    // Auto focus crash. Ignore.
-                    Toast.makeText(getApplicationContext(), "Error de enfoque", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Auto-focus crash");
-                }            
+                  // Auto focus crash. Ignore.
+                  Toast.makeText(getApplicationContext(), "Error de enfoque", Toast.LENGTH_SHORT).show();
+                  Log.e(TAG, "Auto-focus crash");
+                  pressed = false;
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Error de captura", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Capture crash");
+                    pressed = false;
+                }
             }
         });
 
@@ -361,11 +390,16 @@ public class CameraActivity extends Activity implements SensorEventListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+
+          if (pressed || camera == null)
+            return false;
+
             Parameters p = camera.getParameters();
             p.setRotation(degrees);
             camera.setParameters(p);
-            if (pressed || camera == null)
-                return false;
+
+
+
             pressed = true;
             // Auto-focus first, catching rare autofocus error
             try {
@@ -375,17 +409,20 @@ public class CameraActivity extends Activity implements SensorEventListener {
                         try {
                             camera.takePicture(null, null, mPicture);
                         } catch (RuntimeException ex) {
-                            // takePicture crash. Ignore.
-                            Log.e(TAG, "Auto-focus crash");
+                            Log.e(TAG, "Take picture crash");
+                            pressed = false;
                         }
                     }
                 });
             } catch (RuntimeException ex) {
-                // Auto focus crash. Ignore.
-                Toast.makeText(getApplicationContext(), 
-                    "Error de enfoque", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error de enfoque", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Auto-focus crash");
-            }            
+                pressed = false;
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Error de captura", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Capture crash");
+                pressed = false;
+            }
             return true;
         } else {
             return super.onKeyDown(keyCode, event);
@@ -422,7 +459,7 @@ public class CameraActivity extends Activity implements SensorEventListener {
             }
 
             pressed = false;
-            
+
         }
     };
 
