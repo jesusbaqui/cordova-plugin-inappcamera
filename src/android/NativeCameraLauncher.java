@@ -136,12 +136,12 @@ public class NativeCameraLauncher extends CordovaPlugin implements MediaScannerC
 			this.allowEdit = args.getBoolean(7);
 			this.correctOrientation = args.getBoolean(8);
             this.saveToPhotoAlbum = args.getBoolean(9);
-            this.cameraDirection = args.getInt(10);
-			this.imageTitle = args.getString(11);
-			this.confirmPicture = args.getBoolean(12);
-			this.titleFontSize = args.getInt(13);
-			this.titleFontColor = args.getString(14);
-			this.titleBackgroundColor = args.getString(15);
+            this.cameraDirection = args.getInt(11);
+			this.imageTitle = args.getString(12);
+			this.confirmPicture = args.getBoolean(13);
+			this.titleFontSize = args.getInt(14);
+			this.titleFontColor = args.getString(15);
+			this.titleBackgroundColor = args.getString(16);
 
 			// If the user specifies a 0 or smaller width/height
 			// make it -1 so later comparisons succeed
