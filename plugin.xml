@@ -85,8 +85,8 @@
             <clobbers target="CameraPopoverHandle" />
         </js-module>
 
-        <framework src="com.github.bumptech.glide:glide:3.7.0" />
-        <framework src="com.android.support:support-v4:19.1.0" />
+        <framework src="com.github.bumptech.glide:glide:4.0.0" />
+        <framework src="com.android.support:support-v4:25.3.1" />
         
      </platform>
 
